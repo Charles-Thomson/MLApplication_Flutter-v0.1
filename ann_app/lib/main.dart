@@ -16,12 +16,6 @@ class MyApp extends StatelessWidget {
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({super.key});
 
-  static List obsticalLocations = <List<double>>[
-    [10, 10],
-    [50, 50],
-    [100, 100]
-  ];
-
   @override
   Widget build(BuildContext context) {
     List obsticalLocationsA = [
@@ -90,11 +84,17 @@ class _MazeAgent extends State<MazeAgent> {
 }
 
 class MazeObject extends StatelessWidget {
-  const MazeObject({super.key});
+  final List location;
+  const MazeObject({super.key, required this.location});
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 30, width: 30, color: Colors.red);
+    double yLocation = location.elementAt(0);
+    double xLocation = location.elementAt(1);
+    return Positioned(
+        top: yLocation,
+        left: xLocation,
+        child: Container(height: 30, width: 30, color: Colors.red));
   }
 }
 
@@ -108,24 +108,15 @@ class StackedBoard extends StatelessWidget {
         children: [const MazeBoard(), const MazeAgent(), ..._getObsticals()]);
   }
 
-  List _getObsticals() {
-    // List obsticalLocationsA = [
-    //   [10.0, 10.0],
-    //   [30.0, 30.0],
-    //   [100.0, 100.0]
-    // ];
-    int i = 0;
-    List obsticals = <Widget>[];
-    for (i = 0; i < obsticalLocationsA.length; i++) {
-      List currentLocation = obsticalLocationsA.elementAt(i);
-      double yPosition = currentLocation.elementAt(0);
-      double xPosition = currentLocation.elementAt(1);
+  _getObsticals() {
+    //List obsticals = <Widget>[];
+    // for (var location in obsticalLocationsA) {
+    //   Widget item = MazeObject(location: location);
+    //   obsticals.add(item);
+    // }
 
-      Widget item = Positioned(
-          top: yPosition, left: xPosition, child: const MazeObject());
-
-      obsticals.add(item);
-    }
+    var obsticals =
+        obsticalLocationsA.map((location) => MazeObject(location: location));
 
     return obsticals;
   }
