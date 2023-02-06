@@ -1,0 +1,93 @@
+// Implicit animation approach
+class AnimationTestB extends StatefulWidget {
+  const AnimationTestB({super.key});
+
+  @override
+  State<AnimationTestB> createState() => _AnimationTestB();
+}
+
+class _AnimationTestB extends State<AnimationTestB> {
+  late List growableList = <double>[5, 250];
+  double topPosition = 0;
+  int listIndex = 0;
+
+  void chanegPosition(Timer t) async {
+    listIndex++;
+    bool condition = (listIndex >= growableList.length);
+    condition == true ? listIndex = 0 : listIndex = listIndex;
+
+    setState(() {
+      topPosition = growableList.elementAt(listIndex);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    topPosition = 0;
+    Timer.periodic(const Duration(seconds: 1), chanegPosition);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: 200,
+        height: 300,
+        child: Stack(children: <Widget>[
+          AnimatedPositioned(
+            width: 30,
+            height: 30,
+            top: topPosition,
+            left: 20,
+            duration: const Duration(seconds: 3),
+            curve: Curves.fastOutSlowIn,
+            child: Container(color: Colors.blue),
+          )
+        ]));
+  }
+}
+
+// Explicit animation approach
+class AnimationTest extends StatefulWidget {
+  const AnimationTest({super.key});
+
+  @override
+  State<AnimationTest> createState() => _AnimationTest();
+}
+
+class _AnimationTest extends State<AnimationTest> {
+  late double marginTop;
+  late List growableList = <double>[10, 30, 50, 70, 90];
+  int listIndex = 0;
+
+  void chanegPosition(Timer t) async {
+    setState(() {
+      marginTop = growableList.elementAt(listIndex);
+      listIndex++;
+
+      if (listIndex >= growableList.length) {
+        listIndex = 0;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    marginTop = 0;
+    Timer.periodic(const Duration(seconds: 1), chanegPosition);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: marginTop),
+        child: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green,
+            ),
+            width: 40,
+            height: 40));
+  }
+}
