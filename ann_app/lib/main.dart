@@ -72,61 +72,35 @@ class MazeAgent extends StatefulWidget {
 class _MazeAgent extends State<MazeAgent> {
   late double xLocation;
   late double yLocation;
-  late List xPathData;
-  late List yPathData;
-
-  double holderT = 0.0;
-  double holderL = 0.0;
+  late IterableZip<double> moveLocations;
 
   int index = 0;
 
-  // Issue with this - have a nother look at it ?
-  Iterable<List> returnNewPosition() sync* {
-    for (var pair in IterableZip([xPathData, yPathData])) {
-      yield pair;
-    }
-  }
-
-  // New approach just to see if it works
-  List returnNewPositionB() {
-    List returnList = [];
-    returnList.add(xPathData[index]);
-    returnList.add(yPathData[index]);
-    index++;
-    if (index >= xPathData.length) {
-      index = 0;
-    }
-    return returnList;
-  }
-
-  void changePosition(Timer t) {
-    // Iterable<List<dynamic>> newLocation = returnNewPosition();
-    // for (var i in newLocation) {
-    //   holderT = i[0];
-    //   holderL = i[1];
-    // }
-    List newLocation = returnNewPositionB();
-    holderT = newLocation.elementAt(0);
-    holderL = newLocation.elementAt(1);
-
-    setState(() {
-      xLocation = holderT;
-      yLocation = holderL;
-    });
-  }
-
+  // Have another look at the data format being take in as agentData
   @override
   void initState() {
     super.initState();
-    List startLocation = widget.agentData[0]; // Location at index 0
-    yLocation = startLocation.elementAt(0);
-    xLocation = startLocation.elementAt(1);
+    // Works for nested access of lists
+    yLocation = widget.agentData.elementAt(0).elementAt(0);
+    xLocation = widget.agentData.elementAt(0).elementAt(1);
 
-    xPathData = widget.agentData[1];
-    yPathData = widget.agentData[2];
+    moveLocations = IterableZip([widget.agentData[1], widget.agentData[2]]);
 
     Timer.periodic(const Duration(seconds: 5),
         changePosition); // Essentially the tick rate
+  }
+
+  // refactored down
+  void changePosition(Timer t) {
+    setState(() {
+      xLocation = moveLocations.elementAt(index).elementAt(0);
+      yLocation = moveLocations.elementAt(index).elementAt(1);
+    });
+
+    index++;
+    if (index >= moveLocations.length) {
+      index = 0;
+    }
   }
 
   @override
