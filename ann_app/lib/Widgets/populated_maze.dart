@@ -60,8 +60,8 @@ class _PopulatedMaze extends State<PopulatedMaze> {
     return Stack(children: [
       MazeBoard(mazeSizeX: mazeSizeX, mazeSizeY: mazeSizeY),
       ..._getAgents(),
+      ..._getObsticals(),
       ..._getGoals(),
-      ..._getObsticals()
     ]);
   }
 
@@ -74,5 +74,6 @@ class _PopulatedMaze extends State<PopulatedMaze> {
   _getGoals() => goalLocations.map((location) => MazeGoal(
       location: location, stateSizeX: stateSizeX, stateSizeY: stateSizeY));
 
-  _getAgents() => mazeAgentData.map((data) => MazeAgent(agentData: data));
+  _getAgents() => mazeAgentData.map((data) => MazeAgent(
+      agentData: data, stateSizeX: stateSizeX, stateSizeY: stateSizeY));
 }

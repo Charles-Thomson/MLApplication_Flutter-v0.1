@@ -12,7 +12,9 @@ class MazeBoard extends StatelessWidget {
     return Container(
         height: mazeSizeY,
         width: mazeSizeX,
-        decoration:
-            BoxDecoration(border: Border.all(width: 5, color: Colors.black)));
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.5),
+            border: Border.all(width: 7, color: Colors.red),
+            borderRadius: BorderRadius.circular(10)));
   }
 }

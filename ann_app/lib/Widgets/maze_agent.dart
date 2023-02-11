@@ -4,7 +4,14 @@ import 'dart:async';
 // Wrking on the passing of agent data to this i.e path and start location
 class MazeAgent extends StatefulWidget {
   final Iterable<List<double>> agentData;
-  const MazeAgent({super.key, required this.agentData});
+  final double stateSizeX;
+  final double stateSizeY;
+  const MazeAgent({
+    super.key,
+    required this.agentData,
+    required this.stateSizeX,
+    required this.stateSizeY,
+  });
 
   @override
   State<MazeAgent> createState() => _MazeAgent();
@@ -34,7 +41,7 @@ class _MazeAgent extends State<MazeAgent> {
     yLocation = startLocation.elementAt(0);
     xLocation = startLocation.elementAt(1);
 
-    Timer.periodic(const Duration(seconds: 5),
+    Timer.periodic(const Duration(seconds: 2),
         changePosition); // Essentially the tick rate
   }
 
@@ -55,14 +62,21 @@ class _MazeAgent extends State<MazeAgent> {
 
   @override
   Widget build(BuildContext context) {
+    double xSize = widget.stateSizeX;
+    double ySize = widget.stateSizeY;
     return AnimatedPositioned(
-      width: 30,
-      height: 30,
+      width: xSize,
+      height: ySize,
       top: yLocation,
       left: xLocation,
-      duration: const Duration(seconds: 2), // Move time to new position
+      duration: const Duration(seconds: 1), // Move time to new position
       curve: Curves.fastOutSlowIn,
-      child: Container(color: Colors.blue),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.blueGrey,
+            border: Border.all(width: 2, color: Colors.blueAccent),
+            borderRadius: BorderRadius.circular(20)),
+      ),
     );
   }
 }

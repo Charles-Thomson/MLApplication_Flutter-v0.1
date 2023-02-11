@@ -20,6 +20,12 @@ class MazeObject extends StatelessWidget {
         top: yLocation,
         left: xLocation,
         child: Container(
-            height: stateSizeY, width: stateSizeX, color: Colors.red));
+          height: stateSizeY,
+          width: stateSizeX,
+          decoration: BoxDecoration(
+              color: Colors.red,
+              border: Border.all(width: 1, color: Colors.redAccent),
+              borderRadius: BorderRadius.circular(4)),
+        ));
   }
 }

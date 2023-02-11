@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class MazeGoal extends StatelessWidget {
@@ -13,13 +15,19 @@ class MazeGoal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double xLocation = location.elementAt(0);
-    double yLocation = location.elementAt(1);
+    double yLocation = location.elementAt(0);
+    double xLocation = location.elementAt(1);
 
     return Positioned(
         top: yLocation,
         left: xLocation,
         child: Container(
-            height: stateSizeX, width: stateSizeY, color: Colors.yellow));
+          height: stateSizeX,
+          width: stateSizeY,
+          decoration: BoxDecoration(
+              color: Colors.amber,
+              border: Border.all(width: 2, color: Colors.amberAccent),
+              borderRadius: BorderRadius.circular(5)),
+        ));
   }
 }

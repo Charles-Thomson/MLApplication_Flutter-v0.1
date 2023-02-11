@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ann_app/Widgets/populated_maze.dart';
 
 //  **** TO DO ****
-// Clean up the functions to get the Size data
-// Pass the size data to the agnet widget
-// - Work out the boundries of the maze
-// - Set up the API to pass the data
+// API work
+// Data needed - maze size as states
+//             - Obstical Locations
+//             - Goal Locations
+//             - Agent Path Data
 
 void main() => runApp(const MyApp());
 
@@ -25,16 +26,27 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Will come from the API
-    List<double> obsticalLocations = [1.0, 2.0];
-    List<double> goalLocations = [10.0, 20.0];
+    List<double> obsticalLocations = [12.0, 22.0, 32.0, 42.0, 60.0, 61.0, 62.0];
+    List<double> goalLocations = [87.0];
     List<List<double>> mazeAgentData = <List<double>>[
-      [1.0, 2.0, 3.0, 4.0],
-      [10.0, 11.0, 12.0, 13.0]
+      [11.0, 51.0, 57.0, 87.0]
     ];
     List<double> mazeSizeAsStates = [10.0, 10.0];
     return Scaffold(
-        appBar: AppBar(centerTitle: true, title: const Text("ANN - APP_V2")),
-        body: Center(
+      appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Artificial Neural Network - Generational")),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomRight,
+                colors: [
+              Colors.lightBlue.withOpacity(0.2),
+              Colors.blue.withOpacity(0.8)
+            ])),
+        child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,6 +58,8 @@ class CustomScaffold extends StatelessWidget {
                   mazeSizeAsStates: mazeSizeAsStates,
                 )
               ]),
-        ));
+        ),
+      ),
+    );
   }
 }
