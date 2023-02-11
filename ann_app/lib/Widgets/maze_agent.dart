@@ -50,8 +50,6 @@ class _MazeAgent extends State<MazeAgent> {
     setState(() {
       yLocation = agentPath.elementAt(index).elementAt(0);
       xLocation = agentPath.elementAt(index).elementAt(1);
-
-      print([xLocation, yLocation]);
     });
 
     index++;

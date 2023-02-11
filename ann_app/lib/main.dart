@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ann_app/Widgets/populated_maze.dart';
+import 'package:ann_app/Widgets/get_data_button.dart';
 
 //  **** TO DO ****
 // API work
-// Data needed - maze size as states
-//             - Obstical Locations
-//             - Goal Locations
-//             - Agent Path Data
+// Pull button for the API <- works
+// Set the data from the pull to the needed vars - will need
+// a lod of refactoring
+
+// Working on -> getting nested lists out of the returned string, regex !!
 
 void main() => runApp(const MyApp());
 
@@ -31,6 +33,7 @@ class CustomScaffold extends StatelessWidget {
     List<List<double>> mazeAgentData = <List<double>>[
       [11.0, 51.0, 57.0, 87.0]
     ];
+
     List<double> mazeSizeAsStates = [10.0, 10.0];
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +59,8 @@ class CustomScaffold extends StatelessWidget {
                   goalLocations: goalLocations,
                   mazeAgentData: mazeAgentData,
                   mazeSizeAsStates: mazeSizeAsStates,
-                )
+                ),
+                const DataPullButton()
               ]),
         ),
       ),
