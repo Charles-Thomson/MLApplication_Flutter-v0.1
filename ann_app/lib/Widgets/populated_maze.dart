@@ -3,63 +3,76 @@ import 'package:ann_app/Widgets/maze_agent.dart';
 import 'package:ann_app/Widgets/maze_obstical.dart';
 import 'package:ann_app/Widgets/maze_board.dart';
 import 'package:ann_app/location_conversions.dart';
+import 'package:ann_app/Widgets/maze_goal.dart';
 
-class PopulatedMaze extends StatelessWidget {
-  final List obsticalLocations;
+class PopulatedMaze extends StatefulWidget {
+  final List<double> obsticalLocations;
+  final List<double> goalLocations;
   final List<List<double>> mazeAgentData;
-  PopulatedMaze(
+  final List<double> mazeSizeAsStates;
+  const PopulatedMaze(
       {super.key,
       required this.obsticalLocations,
-      required this.mazeAgentData});
+      required this.goalLocations,
+      required this.mazeAgentData,
+      required this.mazeSizeAsStates});
 
-  // Maze size in pixel
+  @override
+  State<PopulatedMaze> createState() => _PopulatedMaze();
+}
+
+class _PopulatedMaze extends State<PopulatedMaze> {
+  // Board size in pixel
   double mazeSizeX = 350.0;
   double mazeSizeY = 350.0;
 
   // board size in states
-  double statesXHolder = 10.0;
-  double statesYHolder = 10.0;
+  late double totalStatesX;
+  late double totalStatesY;
 
-  // The size of each state on board in pixle
-  double stateSizeX = 0.0;
-  double stateSizeY = 0.0;
+  // The size of each state on board
+  late double stateSizeX;
+  late double stateSizeY;
+
+  late Iterable<List<double>> obsticalLocations;
+  late Iterable<List<double>> goalLocations;
+  late Iterable<Iterable<List<double>>> mazeAgentData;
 
   @override
-  Widget build(BuildContext context) {
-    sizeOfStates(statesXHolder, statesYHolder, mazeSizeX, mazeSizeY);
-    return Stack(children: [
-      MazeBoard(mazeSizeX: mazeSizeX, mazeSizeY: mazeSizeY),
-      MazeAgent(agentData: mazeAgentData),
-      ..._getObsticals()
-    ]);
-  }
+  void initState() {
+    super.initState();
+    totalStatesX = widget.mazeSizeAsStates.elementAt(0);
+    totalStatesY = widget.mazeSizeAsStates.elementAt(1);
 
-  // _getAgents() {
-  //   var agents = mazeAgentData.map((data) => MazeAgent(agentData: data));
-  //   return agents;
-  //}
-
-  // convert the obstical locations from state to (x,y) for board
-  Iterable<List<double>> _convertObsticalLocations() {
-    // Get the size of each state(x,y) pixel
     List<double> stateSizes =
-        sizeOfStates(statesXHolder, statesYHolder, mazeSizeX, mazeSizeY);
+        sizeOfStates(totalStatesX, totalStatesY, mazeSizeX, mazeSizeY);
 
     stateSizeX = stateSizes.elementAt(0);
     stateSizeY = stateSizes.elementAt(1);
 
-    // Map all the obstical states to board locations(x,y)
-    var obsticalBoardLocations = obsticalLocations.map((state) =>
-        stateToBoardLocation(stateSizeX, stateSizeY, statesYHolder, state));
-
-    return obsticalBoardLocations;
+    obsticalLocations = _stateToCoord(widget.obsticalLocations);
+    goalLocations = _stateToCoord(widget.goalLocations);
+    mazeAgentData = widget.mazeAgentData.map((data) => _stateToCoord(data));
   }
 
-  _getObsticals() {
-    Iterable<List<double>> obsticalBoardLocations = _convertObsticalLocations();
-    var obsticals = obsticalBoardLocations.map((location) => MazeObject(
-        location: location, stateSizeX: stateSizeX, stateSizeY: stateSizeY));
-
-    return obsticals;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      MazeBoard(mazeSizeX: mazeSizeX, mazeSizeY: mazeSizeY),
+      ..._getAgents(),
+      ..._getGoals(),
+      ..._getObsticals()
+    ]);
   }
+
+  Iterable<List<double>> _stateToCoord(List<double> data) => data.map((state) =>
+      stateToBoardLocation(stateSizeX, stateSizeY, totalStatesY, state));
+
+  _getObsticals() => obsticalLocations.map((location) => MazeObject(
+      location: location, stateSizeX: stateSizeX, stateSizeY: stateSizeY));
+
+  _getGoals() => goalLocations.map((location) => MazeGoal(
+      location: location, stateSizeX: stateSizeX, stateSizeY: stateSizeY));
+
+  _getAgents() => mazeAgentData.map((data) => MazeAgent(agentData: data));
 }

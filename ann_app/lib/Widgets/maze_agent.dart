@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'dart:async';
 
 // Wrking on the passing of agent data to this i.e path and start location
 class MazeAgent extends StatefulWidget {
-  final List<List<double>> agentData;
+  final Iterable<List<double>> agentData;
   const MazeAgent({super.key, required this.agentData});
 
   @override
@@ -12,21 +11,28 @@ class MazeAgent extends StatefulWidget {
 }
 
 class _MazeAgent extends State<MazeAgent> {
+  late List<double> startLocation;
+  late Iterable<List<double>> agentPath;
+
   late double xLocation;
   late double yLocation;
-  late IterableZip<double> moveLocations;
 
   int index = 0;
 
-  // Have another look at the data format being take in as agentData
   @override
   void initState() {
     super.initState();
-    // Works for nested access of lists
-    yLocation = widget.agentData.elementAt(0).elementAt(0);
-    xLocation = widget.agentData.elementAt(0).elementAt(1);
+    Iterable<List<double>> agentData = widget.agentData;
 
-    moveLocations = IterableZip([widget.agentData[1], widget.agentData[2]]);
+    // Start is first list in list<List>
+    List<double> startLocation = agentData.elementAt(0);
+
+    // The path is all the List<List>
+    agentPath = agentData;
+
+    // Start location as x,y
+    yLocation = startLocation.elementAt(0);
+    xLocation = startLocation.elementAt(1);
 
     Timer.periodic(const Duration(seconds: 5),
         changePosition); // Essentially the tick rate
@@ -35,12 +41,14 @@ class _MazeAgent extends State<MazeAgent> {
   // refactored down
   void changePosition(Timer t) {
     setState(() {
-      xLocation = moveLocations.elementAt(index).elementAt(0);
-      yLocation = moveLocations.elementAt(index).elementAt(1);
+      yLocation = agentPath.elementAt(index).elementAt(0);
+      xLocation = agentPath.elementAt(index).elementAt(1);
+
+      print([xLocation, yLocation]);
     });
 
     index++;
-    if (index >= moveLocations.length) {
+    if (index >= agentPath.length) {
       index = 0;
     }
   }

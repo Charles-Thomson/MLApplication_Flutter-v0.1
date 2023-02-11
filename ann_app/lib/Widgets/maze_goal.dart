@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MazeObject extends StatelessWidget {
+class MazeGoal extends StatelessWidget {
   final List<double> location;
   final double stateSizeX;
   final double stateSizeY;
 
-  const MazeObject(
+  const MazeGoal(
       {super.key,
       required this.location,
       required this.stateSizeX,
@@ -13,13 +13,13 @@ class MazeObject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double yLocation = location.elementAt(0);
-    double xLocation = location.elementAt(1);
+    double xLocation = location.elementAt(0);
+    double yLocation = location.elementAt(1);
 
     return Positioned(
         top: yLocation,
         left: xLocation,
         child: Container(
-            height: stateSizeY, width: stateSizeX, color: Colors.red));
+            height: stateSizeX, width: stateSizeY, color: Colors.yellow));
   }
 }
