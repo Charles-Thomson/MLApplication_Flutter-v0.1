@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ann_app/Widgets/populated_maze.dart';
-import 'package:ann_app/Widgets/get_data_button.dart';
 
 //  **** TO DO ****
-// API work
-// Pull button for the API <- works
-// Set the data from the pull to the needed vars - will need
-// a lod of refactoring
-
-// Working on -> getting nested lists out of the returned string, regex !!
-
+// Type is coming out as string in the populated maze
+// - this needs to be of type List<double>
+// All comes down to sorting out List types
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -17,24 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false, home: CustomScaffold());
   }
 }
 
 class CustomScaffold extends StatelessWidget {
-  const CustomScaffold({super.key});
+  CustomScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Will come from the API
-    List<double> obsticalLocations = [12.0, 22.0, 32.0, 42.0, 60.0, 61.0, 62.0];
-    List<double> goalLocations = [87.0];
-    List<List<double>> mazeAgentData = <List<double>>[
-      [11.0, 51.0, 57.0, 87.0]
-    ];
-
-    List<double> mazeSizeAsStates = [10.0, 10.0];
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -53,15 +40,7 @@ class CustomScaffold extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                PopulatedMaze(
-                  obsticalLocations: obsticalLocations,
-                  goalLocations: goalLocations,
-                  mazeAgentData: mazeAgentData,
-                  mazeSizeAsStates: mazeSizeAsStates,
-                ),
-                const DataPullButton()
-              ]),
+              children: const <Widget>[PopulatedMaze()]),
         ),
       ),
     );
