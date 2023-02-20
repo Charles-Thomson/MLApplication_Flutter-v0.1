@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ann_app/Widgets/populated_maze.dart';
 
 //  **** TO DO ****
-// Type is coming out as string in the populated maze
-// - this needs to be of type List<double>
-// All comes down to sorting out List types
+// Goals for the day
+// Implement the remainder of the score board from the pulled data
+// Clean up the UI elements
+// General refactoring and clean up of APP
+// Clean up of back end - split out the building and running elements ?
+// The info board needs work on the updating side of things to keep it in time
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -28,6 +31,7 @@ class CustomScaffold extends StatelessWidget {
           title: const Text("Artificial Neural Network - Generational")),
       body: Container(
         width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -40,7 +44,9 @@ class CustomScaffold extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const <Widget>[PopulatedMaze()]),
+              children: const <Widget>[
+                PopulatedMaze(),
+              ]),
         ),
       ),
     );

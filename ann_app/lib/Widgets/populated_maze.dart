@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'package:flutter/material.dart';
 import 'package:ann_app/Widgets/maze_agent.dart';
 import 'package:ann_app/Widgets/maze_obstical.dart';
@@ -5,6 +7,9 @@ import 'package:ann_app/Widgets/maze_board.dart';
 import 'package:ann_app/location_conversions.dart';
 import 'package:ann_app/Widgets/maze_goal.dart';
 import 'package:ann_app/Widgets/get_data_button.dart';
+import 'package:ann_app/Widgets/get_agent_data_button.dart';
+import 'package:ann_app/Widgets/maze_info_display.dart';
+import 'package:ann_app/Widgets/run_maze_button.dart';
 
 class PopulatedMaze extends StatefulWidget {
   // final List<double> obsticalLocations;
@@ -44,6 +49,9 @@ class _PopulatedMaze extends State<PopulatedMaze> {
   List<Widget> agent = [];
   Iterable<MazeObject> obsticals = [];
   Iterable<MazeGoal> goals = [];
+  List<Widget> infoDisply = [];
+
+  List<Widget> indicator = [];
 
   // Empty to start
   late Iterable<List<double>> obsticalLocations;
@@ -83,14 +91,12 @@ class _PopulatedMaze extends State<PopulatedMaze> {
   }
 
   List<Widget> buildAgents(List<List<double>> data) {
-    List<double> mazeAgentDataHolder = data.elementAt(3);
+    List<double> mazeAgentDataHolder = data.elementAt(0);
     mazeAgentData = _stateToCoord(mazeAgentDataHolder);
-    print(mazeAgentData);
     Widget newAgnets = _getAgent();
     List<Widget> rtn = [];
     rtn.add(newAgnets);
 
-    print(rtn);
     return rtn;
     // multiple agents
     //mazeAgentData = mazeAgentDataHolder.map((x) => _stateToCoord(x));
@@ -101,23 +107,34 @@ class _PopulatedMaze extends State<PopulatedMaze> {
     return Column(children: [
       Stack(children: [
         MazeBoard(mazeSizeX: mazeSizeX, mazeSizeY: mazeSizeY),
-        ...agent,
         ...obsticals,
         ...goals,
-        DataPullButton(onClicked: (List<List<double>> mazeData) {
-          print("Passed function");
-          setStateSize(mazeData);
+        ...agent,
+      ]),
+      Stack(children: [...infoDisply]),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const runMazeButton(),
+          DataPullButton(onClicked: (List<List<double>> buildData) {
+            setStateSize(buildData);
+            setState(() {
+              obsticals = buildObsticals(buildData);
+              goals = buildGoals(buildData);
+              //agent = buildAgents(buildData);
+            });
+          }),
+          AgentDataPullButton(onClicked: (List<List<double>> agentData) {
+            setState(() {
+              agent = buildAgents(agentData);
+              Widget newInfoDisply = InfoDisplay(data: agentData);
+              infoDisply.add(newInfoDisply);
+            });
+          })
+        ],
+      ),
 
-          List<Widget> aagents = buildAgents(mazeData);
-          print(aagents);
-
-          setState(() {
-            obsticals = buildObsticals(mazeData);
-            goals = buildGoals(mazeData);
-            agent = buildAgents(mazeData);
-          });
-        }),
-      ])
+      //const InfoDisplay(),
     ]);
   }
 

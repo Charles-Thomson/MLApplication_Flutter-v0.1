@@ -1,26 +1,24 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import "package:http/http.dart" as http;
 
-import 'package:http/http.dart' as http;
-
-class DataPullButton extends StatefulWidget {
+class AgentDataPullButton extends StatefulWidget {
   final Function onClicked;
-  const DataPullButton({super.key, required this.onClicked});
+  const AgentDataPullButton({super.key, required this.onClicked});
 
   @override
-  State<DataPullButton> createState() => _DataPullButton();
+  State<AgentDataPullButton> createState() => _AgentDataPullButton();
 }
 
-class _DataPullButton extends State<DataPullButton> {
+class _AgentDataPullButton extends State<AgentDataPullButton> {
   String url = '';
   String data = '';
   List tagsJson = [];
   String finalData = "";
-  List<double> mapSizeAsStates = [];
-  List<double> obsticalLocations = [];
-  List<double> goalLocations = [];
-  List<double> agentPathHoler = [];
+
+  List<double> agentPath = [];
+  List<double> agentPathRewards = [];
+
   List<List<double>> fullData = [];
 
   passData(String url) async {
@@ -37,7 +35,7 @@ class _DataPullButton extends State<DataPullButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
+      width: 130,
       height: 60,
       decoration: BoxDecoration(
           border:
@@ -50,30 +48,26 @@ class _DataPullButton extends State<DataPullButton> {
               textStyle: const TextStyle(fontSize: 20)),
           onPressed: () async {
             try {
-              url = 'http://10.0.2.2:5000/BuildData';
+              url = 'http://10.0.2.2:5000/AgentData';
               data = await passData(url);
 
-              List<double> mapSizeAsStates =
-                  formatData(jsonDecode(data)['map_size_as_states']);
+              List<double> agentPath =
+                  formatData(jsonDecode(data)['agent_path']);
 
-              List<double> obsticalLocations =
-                  formatData(jsonDecode(data)['obstical_locations']);
-
-              List<double> goalLocations =
-                  formatData(jsonDecode(data)['goal_locations']);
+              List<double> agentPathRewards =
+                  formatData(jsonDecode(data)['agent_path_rewards']);
 
               // This can be refactored down
-              List<List<double>> buildData = [
-                mapSizeAsStates,
-                obsticalLocations,
-                goalLocations,
+              List<List<double>> agentData = [
+                agentPath,
+                agentPathRewards,
               ];
-              widget.onClicked(buildData);
+              widget.onClicked(agentData);
             } catch (e) {
               Null;
             }
           },
-          child: const Text("Build Maze", style: TextStyle(fontSize: 14))),
+          child: const Text("Start Agent", style: TextStyle(fontSize: 14))),
     );
   }
 }
