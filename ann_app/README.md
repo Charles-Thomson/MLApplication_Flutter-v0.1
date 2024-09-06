@@ -1,16 +1,10 @@
-# ann_app
+First iteration of the Flutter-based Artificial Neural Networking Application
 
-A new Flutter project.
+Currently a proof of concept for the viability of Flutter as the project framework.
 
-## Getting Started
+The overall goal of the project is to create an application in Flutter to display the results of Neural Network training.
 
-This project is a starting point for a Flutter application.
+This project builds on the FOX_AI project.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
